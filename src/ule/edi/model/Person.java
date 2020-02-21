@@ -44,12 +44,19 @@ public class Person {
 		return "{ NIF: "+ nif + "  Name : " + name + ", Age:" + age + "}";
 	}
 	
-    @Override
 	public boolean equals(Object obj) {
 		// TODO Auto-generated method stub
 		// Dos personas son iguales si son iguales sus nifs
 		
-    	
+		if(this == obj) {
+			return true;
+		}
+		
+		if(obj instanceof Person) { //Aquí compruebo que ambos objetos son de la misma clase
+			Person person = (Person) obj;
+			return this.nif.equals(person.getNif());
+		}
+				
 		return false;
 	}
 	
