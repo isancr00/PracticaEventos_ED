@@ -1,9 +1,13 @@
 package ule.edi.event;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Random;
+import java.util.Vector;
 
 import ule.edi.model.*;
 import ule.edi.model.Configuration.Type;
@@ -154,7 +158,7 @@ public class EventArrayImpl implements Event {
 	public Person refundSeat(int pos) {
 		// TODO Auto-generated method stub
 		Person aux = null;
-		if (pos < 1 && pos > nSeats + 1) { // posicion no valida
+		if (pos < 1 && pos > nSeats) { // posicion no valida
 			return null;
 		} else if (this.seats[pos] == null) { // butaca no vendida
 			return null;
@@ -168,7 +172,7 @@ public class EventArrayImpl implements Event {
 	@Override
 	public boolean sellSeat(int pos, Person p, boolean advanceSale) {
 		// TODO Auto-generated method stub
-		if (pos < 1 && pos > nSeats + 1) {
+		if (pos < 1 && pos > nSeats) {
 			return false;
 		} else if (this.seats[pos] != null) {
 			return false;
@@ -185,7 +189,7 @@ public class EventArrayImpl implements Event {
 
 	@Override
 	public int getNumberOfAttendingChildren() {
-		// TODO Auto-generated method stub
+
 		int childrenAttending = 0;
 
 		for (int i = 0; i < this.nSeats; i++) {
@@ -201,7 +205,6 @@ public class EventArrayImpl implements Event {
 
 	@Override
 	public int getNumberOfAttendingAdults() {
-		// TODO Auto-generated method stub
 		int adultsAttending = 0;
 
 		for (int i = 0; i < this.nSeats; i++) {
@@ -217,7 +220,6 @@ public class EventArrayImpl implements Event {
 
 	@Override
 	public int getNumberOfAttendingElderlyPeople() {
-		// TODO Auto-generated method stub
 		int elderAttending = 0;
 
 		for (int i = 0; i < this.nSeats; i++) {
@@ -233,44 +235,109 @@ public class EventArrayImpl implements Event {
 
 	@Override
 	public List<Integer> getAvailableSeatsList() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		List<Integer> availableSeats = new ArrayList<Integer>();
+		
+	
+		for (int i = 0; i < this.nSeats; i++) {
+			if (this.seats[i] == null) {
+				availableSeats.add(i+1);
+			}
+		}
+		
+		return availableSeats;
 	}
 
 	@Override
 	public List<Integer> getAdvanceSaleSeatsList() {
-		// TODO Auto-generated method stub
-		return null;
+		List<Integer> advanceSellSeats = new ArrayList<Integer>();
+		
+		
+		for (int i = 0; i < this.nSeats; i++) {
+			if (this.seats[i] != null) {
+				if(this.seats[i].getType()== Type.ADVANCE_SALE) {
+					advanceSellSeats.add(i+1);
+				}
+			}
+		}
+		
+		return advanceSellSeats;
 	}
+
 
 	@Override
 	public int getMaxNumberConsecutiveSeats() {
-		// TODO Auto-generated method stub
-		return 0;
+		
+		int maxConsecutive = 0;		
+		
+		for (int i = 0; i < this.nSeats; i++) {
+			if (this.seats[i] == null) {
+				maxConsecutive++;
+			}else {
+				maxConsecutive = 0;
+			}
+		}
+
+		
+		return maxConsecutive;
 	}
 
 	@Override
 	public Double getPrice(Seat seat) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		Double finalPrice=(double) 0;
+		if(seat == null || seat.getEvent() != this) {
+			return (double) 0;
+		}
+		
+		finalPrice = this.price - this.discountAdvanceSale;
+		
+		return finalPrice;
+		
 	}
 
 	@Override
 	public Double getCollectionEvent() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		Double totalPrice = (double) 0;
+			
+		for (int i = 0; i < this.nSeats; i++) {
+			if (this.seats[i] == null || this.seats[i].getEvent() != this) {
+				totalPrice += 0;
+			}else {
+				totalPrice += (this.price-this.discountAdvanceSale);
+			}
+		}		
+		return totalPrice;
 	}
 
 	@Override
 	public int getPosPerson(Person p) {
-		// TODO Auto-generated method stub
-		return 0;
+		
+		int i = 0;
+		int position = -1;
+		
+		while(i<this.nSeats && !this.seats[i].getHolder().equals(p)) {
+			i++;
+			position = i+1;
+		}
+		
+		return position;
+
 	}
 
 	@Override
 	public boolean isAdvanceSale(Person p) {
-		// TODO Auto-generated method stub
-		return false;
+		int i = 0;
+		boolean advance = false;
+		
+		while(i<this.nSeats && !this.seats[i].getHolder().equals(p) && this.seats[i].getType()== Type.ADVANCE_SALE) {
+			i++;
+			advance = true;			
+		}
+		
+		return advance;
+
 	}
 
 }
