@@ -145,12 +145,12 @@ public class EventArrayImpl implements Event {
 	@Override
 	public Seat getSeat(int pos) {
 		// TODO Auto-generated method stub
-		if (pos < 1 && pos > nSeats + 1) { // posicion no valida
+		if (pos < 1 || pos > nSeats + 1) { // posicion no valida
 			return null;
-		} else if (this.seats[pos] == null) { // butaca no vendida
+		} else if (this.seats[pos-1] == null) { // butaca no vendida
 			return null;
 		} else { // butaca vendida
-			return this.seats[pos];
+			return this.seats[pos-1];
 		}
 	}
 
@@ -160,11 +160,11 @@ public class EventArrayImpl implements Event {
 		Person aux = null;
 		if (pos < 1 && pos > nSeats) { // posicion no valida
 			return null;
-		} else if (this.seats[pos] == null) { // butaca no vendida
+		} else if (this.seats[pos-1] == null) { // butaca no vendida
 			return null;
 		} else { // butaca vendida
-			aux = this.seats[pos].getHolder();
-			this.seats[pos] = null;
+			aux = this.seats[pos-1].getHolder();
+			this.seats[pos-1] = null;
 			return aux;
 		}
 	}
@@ -174,15 +174,15 @@ public class EventArrayImpl implements Event {
 		// TODO Auto-generated method stub
 		if (pos < 1 && pos > nSeats) {
 			return false;
-		} else if (this.seats[pos] != null) {
+		} else if (this.seats[pos-1] != null) {
 			return false;
 		} else if (advanceSale) {
-			Seat seat = new Seat(this, pos, Type.ADVANCE_SALE, p);
-			this.seats[pos] = seat;
+			Seat seat = new Seat(this, pos-1, Type.ADVANCE_SALE, p);
+			this.seats[pos-1] = seat;
 			return true;
 		} else {
-			Seat seat = new Seat(this, pos, Type.NORMAL, p);
-			this.seats[pos] = seat;
+			Seat seat = new Seat(this, pos-1, Type.NORMAL, p);
+			this.seats[pos-1] = seat;
 			return true;
 		}
 	}
@@ -268,13 +268,19 @@ public class EventArrayImpl implements Event {
 	@Override
 	public int getMaxNumberConsecutiveSeats() {
 		
-		int maxConsecutive = 0;		
+		int aux = 0;	
+		int maxConsecutive = 0;
 		
 		for (int i = 0; i < this.nSeats; i++) {
 			if (this.seats[i] == null) {
-				maxConsecutive++;
+				aux++;
+				
+				if(aux>maxConsecutive) {
+					aux = maxConsecutive;
+				}
+				
 			}else {
-				maxConsecutive = 0;
+				aux = 0;
 			}
 		}
 
