@@ -158,7 +158,7 @@ public class EventArrayImpl implements Event {
 	public Person refundSeat(int pos) {
 		// TODO Auto-generated method stub
 		Person aux = null;
-		if (pos < 1 && pos > nSeats) { // posicion no valida
+		if (pos < 1 || pos > nSeats) { // posicion no valida
 			return null;
 		} else if (this.seats[pos-1] == null) { // butaca no vendida
 			return null;
@@ -172,7 +172,7 @@ public class EventArrayImpl implements Event {
 	@Override
 	public boolean sellSeat(int pos, Person p, boolean advanceSale) {
 		// TODO Auto-generated method stub
-		if (pos < 1 && pos > nSeats) {
+		if (pos < 1 || pos > nSeats) {
 			return false;
 		} else if (this.seats[pos-1] != null) {
 			return false;
@@ -276,7 +276,7 @@ public class EventArrayImpl implements Event {
 				aux++;
 				
 				if(aux>maxConsecutive) {
-					aux = maxConsecutive;
+					maxConsecutive = aux;
 				}
 				
 			}else {
