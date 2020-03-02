@@ -392,11 +392,51 @@ public class EventArrayImplTests {
 	
 	@Test 
 	public void testGetCollectionNotThisEvent() {
-//		Person p = new Person("Javier","857412369E",19);
 		Assert.assertTrue(e.getCollectionEvent()==0);
 		
 	}
-
+	
+	@Test
+	public void testGetPosPersonSamePerson() {
+		Person p = new Person("Javier","857412369E",19);
+		e.sellSeat(1, p, true);
+		Assert.assertEquals(e.getPosPerson(p),1);
+	}
+	
+	@Test
+	public void testGetPosPersonNotSamePerson() {
+		Person p = new Person("Javier","857412369E",19);
+		Person p2 = new Person("Marta","259878545L",19);
+		e.sellSeat(1, p, true);
+		Assert.assertEquals(e.getPosPerson(p2),-1);
+	}
+	
+		
+	@Test
+	public void testIsAdvancedNotAdvanced() {
+		Person p = new Person("Javier","857412369E",19);
+		e.sellSeat(1, p, false);
+		Assert.assertFalse(e.isAdvanceSale(p));
+	}
+	
+	
+	@Test
+	public void testIsAdvancedNotSamePerson() {
+		Person p = new Person("Javier","857412369E",19);
+		Person p2 = new Person("Marta","259878545L",19);
+		e.sellSeat(1, p, true);
+		Assert.assertFalse(e.isAdvanceSale(p2));
+	}
+	
+	
+	@Test
+	public void testIsAdvanced() {
+		Person p = new Person("Javier","857412369E",19);
+		e.sellSeat(1, p, true);
+		Assert.assertTrue(e.isAdvanceSale(p));
+	}
+	
+	
 	
 	
 	
