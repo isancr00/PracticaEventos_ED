@@ -436,6 +436,22 @@ public class EventArrayImplTests {
 		Assert.assertTrue(e.isAdvanceSale(p));
 	}
 	
+	@Test
+	public void testEqualsPersonAndPerson() {
+		Person p1 = new Person("Javier","857412369E",19);
+		Person p2 = new Person("Javier","857412369E",19);
+		
+		Assert.assertTrue(p1.equals(p2));
+	}
+	
+	@Test
+	public void testEqualsPersonAndNoPerson() {
+		Person p = new Person("Javier","857412369E",19);
+		
+		Seat s = new Seat(e, 1, Type.NORMAL, p);
+		
+		Assert.assertFalse(p.equals(s));
+	}
 	
 	
 	
