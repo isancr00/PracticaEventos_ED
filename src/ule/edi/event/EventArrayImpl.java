@@ -296,7 +296,7 @@ public class EventArrayImpl implements Event {
 			return (double) 0;
 		}
 		
-		finalPrice = this.price - this.discountAdvanceSale;
+		finalPrice = this.price - ((this.price*this.discountAdvanceSale)/100);
 		
 		return finalPrice;
 		
@@ -319,31 +319,33 @@ public class EventArrayImpl implements Event {
 
 	@Override
 	public int getPosPerson(Person p) {
-		
-		int position = -1;
-		
-		int i=0;
-		
-		while(i<this.nSeats && this.seats[i] != null && this.seats[i].getHolder().equals(p)) {
-			position = i+1;
-			i++;
-		}		
-		return position;
 
+		for(int i = 0;i<this.nSeats;i++) {
+			if(this.seats[i] != null) {
+				if(this.seats[i].getHolder().equals(p)) {
+					return i+1;
+				}
+			}
+		}
+		
+		return -1;
+		
 	}
 
 	@Override
 	public boolean isAdvanceSale(Person p) {
-		boolean advance = false;
-		int i = 0;
 
 		
-		while(i<this.nSeats && this.seats[i]!= null && this.seats[i].getHolder().equals(p) && this.seats[i].getType() == Type.ADVANCE_SALE){
-			advance = true;
-			i++;
+		for(int i=0;i<this.nSeats;i++) {
+			if(this.seats[i] != null) {
+				if(this.seats[i].getHolder().equals(p)) {
+					if(this.seats[i].getType() == Type.ADVANCE_SALE) {
+						return true;
+					}
+				}
+			}
 		}
-		
-		return advance;
+		return false;
 
 	}
 

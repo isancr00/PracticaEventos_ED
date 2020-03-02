@@ -439,12 +439,5 @@ public class EventArrayImplTests {
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	
 
 }
