@@ -177,11 +177,11 @@ public class EventArrayImpl implements Event {
 		} else if (this.seats[pos-1] != null) {
 			return false;
 		} else if (advanceSale) {
-			Seat seat = new Seat(this, pos-1, Type.ADVANCE_SALE, p);
+			Seat seat = new Seat(this, pos, Type.ADVANCE_SALE, p);
 			this.seats[pos-1] = seat;
 			return true;
 		} else {
-			Seat seat = new Seat(this, pos-1, Type.NORMAL, p);
+			Seat seat = new Seat(this, pos, Type.NORMAL, p);
 			this.seats[pos-1] = seat;
 			return true;
 		}
@@ -311,7 +311,7 @@ public class EventArrayImpl implements Event {
 			if (this.seats[i] == null) {
 				totalPrice += 0;
 			}else {
-				totalPrice += (this.price-this.discountAdvanceSale);
+				totalPrice += (this.price-(this.price*this.discountAdvanceSale)/100);
 			}
 		}		
 		return totalPrice;
